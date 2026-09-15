@@ -1,0 +1,55 @@
+name: Generate homepage logo
+
+on:
+  push:
+    branches:
+      - issue-7-homepage-logo
+    paths:
+      - .github/workflows/generate-homepage-logo.yml
+
+permissions:
+  contents: read
+
+jobs:
+  resize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install Pillow
+        run: python3 -m pip install --user Pillow
+
+      - name: Create homepage image
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source = Path("images/logo.png")
+          output = Path("images/logo-home.png")
+          max_width = 960
+
+          with Image.open(source) as image:
+              original_width, original_height = image.size
+              if original_width <= max_width:
+                  resized = image.copy()
+              else:
+                  target_height = round(original_height * max_width / original_width)
+                  resized = image.resize((max_width, target_height), Image.Resampling.LANCZOS)
+
+              resized.save(output, format="PNG", optimize=True)
+
+              print(f"source={original_width}x{original_height}")
+              print(f"homepage={resized.width}x{resized.height}")
+              print(f"source_bytes={source.stat().st_size}")
+              print(f"homepage_bytes={output.stat().st_size}")
+          PY
+
+      - name: Upload resized image
+        uses: actions/upload-artifact@v4
+        with:
+          name: homepage-logo
+          path: images/logo-home.png
+          if-no-files-found: error
+          retention-days: 1
