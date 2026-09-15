@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --bg: #f7f5f0;
   --surface: #ffffff;
   --surface-alt: #efe9df;
@@ -8,8 +9,57 @@
   --accent-dark: #74301f;
   --border: #ddd5c9;
   --shadow: 0 18px 50px rgba(46, 38, 31, 0.12);
+  --header-bg: rgba(247, 245, 240, 0.94);
+  --header-border: rgba(221, 213, 201, 0.82);
+  --secondary-hover: rgba(158, 73, 50, 0.08);
+  --contact-bg: #1f2a2e;
+  --contact-text: #ffffff;
+  --contact-muted: rgba(255, 255, 255, 0.76);
+  --contact-eyebrow: #d89a87;
   --radius: 18px;
   --max-width: 1120px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #151819;
+  --surface: #1f2325;
+  --surface-alt: #272c2e;
+  --text: #f2f0eb;
+  --muted: #b7bdbe;
+  --accent: #e08a70;
+  --accent-dark: #f0a48d;
+  --border: #3a4245;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+  --header-bg: rgba(21, 24, 25, 0.94);
+  --header-border: rgba(58, 66, 69, 0.88);
+  --secondary-hover: rgba(224, 138, 112, 0.12);
+  --contact-bg: #0f1213;
+  --contact-text: #ffffff;
+  --contact-muted: rgba(255, 255, 255, 0.74);
+  --contact-eyebrow: #e6a28e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #151819;
+    --surface: #1f2325;
+    --surface-alt: #272c2e;
+    --text: #f2f0eb;
+    --muted: #b7bdbe;
+    --accent: #e08a70;
+    --accent-dark: #f0a48d;
+    --border: #3a4245;
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+    --header-bg: rgba(21, 24, 25, 0.94);
+    --header-border: rgba(58, 66, 69, 0.88);
+    --secondary-hover: rgba(224, 138, 112, 0.12);
+    --contact-bg: #0f1213;
+    --contact-text: #ffffff;
+    --contact-muted: rgba(255, 255, 255, 0.74);
+    --contact-eyebrow: #e6a28e;
+  }
 }
 
 * {
@@ -49,8 +99,8 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
-  border-bottom: 1px solid rgba(221, 213, 201, 0.82);
-  background: rgba(247, 245, 240, 0.94);
+  border-bottom: 1px solid var(--header-border);
+  background: var(--header-bg);
   backdrop-filter: blur(12px);
 }
 
@@ -79,11 +129,97 @@ a {
   font-size: 0.78rem;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
 .site-nav {
   display: flex;
   gap: 24px;
   font-size: 0.94rem;
   font-weight: 650;
+}
+
+.theme-picker {
+  position: relative;
+}
+
+.theme-picker summary {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+}
+
+.theme-picker summary::-webkit-details-marker {
+  display: none;
+}
+
+.theme-picker summary:hover,
+.theme-picker summary:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-icon {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  min-width: 132px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.theme-menu button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.theme-menu button:hover,
+.theme-menu button:focus-visible {
+  background: var(--surface-alt);
+}
+
+.theme-menu button[aria-pressed="true"] {
+  color: var(--accent);
+  font-weight: 750;
+}
+
+.theme-menu button[aria-pressed="true"]::after {
+  content: "✓";
+  margin-left: 12px;
 }
 
 .site-nav a {
@@ -198,7 +334,7 @@ h3 {
 
 .button.secondary:hover,
 .button.secondary:focus-visible {
-  background: rgba(158, 73, 50, 0.08);
+  background: var(--secondary-hover);
 }
 
 .button.secondary.light {
@@ -281,8 +417,8 @@ h3 {
 }
 
 .contact-section {
-  background: var(--text);
-  color: #fff;
+  background: var(--contact-bg);
+  color: var(--contact-text);
 }
 
 .contact-card {
@@ -298,11 +434,11 @@ h3 {
 
 .contact-card p:not(.eyebrow) {
   margin-bottom: 0;
-  color: rgba(255, 255, 255, 0.76);
+  color: var(--contact-muted);
 }
 
 .contact-card .eyebrow {
-  color: #d89a87;
+  color: var(--contact-eyebrow);
 }
 
 .contact-actions {
@@ -400,8 +536,13 @@ h3 {
     padding: 18px 0;
   }
 
-  .site-nav {
+  .header-actions {
     width: 100%;
+    justify-content: space-between;
+  }
+
+  .site-nav {
+    flex: 1;
     justify-content: space-between;
     gap: 12px;
   }
