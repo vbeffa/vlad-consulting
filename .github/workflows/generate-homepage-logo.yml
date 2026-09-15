@@ -8,7 +8,7 @@ on:
       - .github/workflows/generate-homepage-logo.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   resize:
@@ -46,10 +46,10 @@ jobs:
               print(f"homepage_bytes={output.stat().st_size}")
           PY
 
-      - name: Upload resized image
-        uses: actions/upload-artifact@v4
-        with:
-          name: homepage-logo
-          path: images/logo-home.png
-          if-no-files-found: error
-          retention-days: 1
+      - name: Commit resized image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/logo-home.png
+          git commit -m "Add optimized homepage logo"
+          git push
