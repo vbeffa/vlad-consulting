@@ -1,0 +1,45 @@
+name: Generate homepage WebP
+
+on:
+  push:
+    branches:
+      - issue-7-homepage-logo
+    paths:
+      - .github/workflows/generate-homepage-webp.yml
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install Pillow
+        run: python3 -m pip install --user Pillow
+
+      - name: Convert homepage image to WebP
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source = Path("images/logo-home.png")
+          output = Path("images/logo-home.webp")
+
+          with Image.open(source) as image:
+              image.convert("RGB").save(output, format="WEBP", quality=90, method=6)
+              print(f"dimensions={image.width}x{image.height}")
+              print(f"png_bytes={source.stat().st_size}")
+              print(f"webp_bytes={output.stat().st_size}")
+          PY
+
+      - name: Commit WebP image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/logo-home.webp
+          git commit -m "Add WebP homepage logo"
+          git push
