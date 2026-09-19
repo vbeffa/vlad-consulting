@@ -1,0 +1,40 @@
+name: Prepare Inter font
+
+on:
+  push:
+    branches:
+      - issue-14-inter-font
+    paths:
+      - .inter-font-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+
+      - name: Install font tooling
+        run: python3 -m pip install --user "fonttools[woff]"
+
+      - name: Download and subset Inter
+        run: |
+          mkdir -p fonts
+          curl -L --fail --silent --show-error             https://raw.githubusercontent.com/rsms/inter/master/docs/font-files/InterVariable.woff2             -o /tmp/InterVariable.woff2
+          python3 -m fontTools.subset /tmp/InterVariable.woff2             --output-file=fonts/InterVariable-latin.woff2             --flavor=woff2             --unicodes="U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD"             --layout-features="*"             --no-hinting
+          curl -L --fail --silent --show-error             https://raw.githubusercontent.com/rsms/inter/master/LICENSE.txt             -o fonts/LICENSE-Inter.txt
+          ls -lh fonts/InterVariable-latin.woff2
+
+      - name: Remove temporary files
+        run: rm -f .inter-font-trigger .github/workflows/prepare-inter-font.yml
+
+      - name: Commit font assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add self-hosted Inter font"
+          git push
