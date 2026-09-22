@@ -99,6 +99,7 @@ create_field "Email" TEXT
 create_field "Phone" TEXT
 create_field "Website" TEXT
 create_field "Opportunity" TEXT
+create_field "First contact" DATE
 create_field "Next follow-up" DATE
 create_field "Last contact" DATE
 create_field "Source" SINGLE_SELECT   --single-select-options "Cold outreach,Referral,Existing relationship,Craigslist"
