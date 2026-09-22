@@ -95,6 +95,9 @@ create_field() {
 
 echo "Creating fields"
 create_field "Contact" TEXT
+create_field "Email" TEXT
+create_field "Phone" TEXT
+create_field "Website" TEXT
 create_field "Opportunity" TEXT
 create_field "Next follow-up" DATE
 create_field "Last contact" DATE
