@@ -28,7 +28,7 @@ The script requires the GitHub CLI and authentication with the `project` scope:
 
 ```bash
 gh auth refresh -s project
-./scripts/setup-github-project.sh
+bash scripts/setup-github-project.sh
 ```
 
 By default it creates the project under `vbeffa` and links `vbeffa/vlad-consulting`. These can be overridden with `OWNER`, `REPO`, and `PROJECT_TITLE` environment variables.
