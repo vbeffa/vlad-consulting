@@ -20,11 +20,11 @@ The project uses this pipeline:
 
 It also creates fields for Contact, Opportunity, Next follow-up, Last contact, Source, Notes, and Estimated value, plus a Pipeline board view.
 
-The setup script intentionally contains **no prospect or client data**, because this repository is public. Add leads as draft items directly in the private GitHub Project.
+The setup script intentionally contains **no prospect or client data**, because this repository is public.
 
 ### Setup
 
-The script requires the GitHub CLI and authentication with the `project` scope:
+The setup script requires the GitHub CLI and authentication with the `project` scope:
 
 ```bash
 gh auth refresh -s project
@@ -32,3 +32,24 @@ bash scripts/setup-github-project.sh
 ```
 
 By default it creates the project under `vbeffa` and links `vbeffa/vlad-consulting`. These can be overridden with `OWNER`, `REPO`, and `PROJECT_TITLE` environment variables.
+
+### Import private leads
+
+Actual prospect/client data should remain local. The repository ignores `.private/`, and `scripts/import-consulting-leads.sh` reads lead data from `.private/consulting-leads.json` by default.
+
+Start from the committed example:
+
+```bash
+mkdir -p .private
+cp scripts/consulting-leads.example.json .private/consulting-leads.json
+```
+
+Edit the local JSON file, then preview the import without changing the Project:
+
+```bash
+DRY_RUN=1 bash scripts/import-consulting-leads.sh
+```
+
+When the preview looks correct, run the importer without `DRY_RUN`. Existing Project items with the same title are skipped to reduce accidental duplicates.
+
+The importer defaults to GitHub Project `#2` under `vbeffa`. Override `OWNER`, `PROJECT_NUMBER`, or `DATA_FILE` as needed.
