@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Example Business",
+    "status": "Prospect",
+    "contact": "Example Contact",
+    "email": "contact@example.com",
+    "phone": "555-0100",
+    "website": "https://example.com",
+    "opportunity": "Short description of the possible project",
+    "first_contact": "2026-09-22",
+    "next_follow_up": "2026-10-01",
+    "last_contact": "2026-09-22",
+    "source": "Referral",
+    "notes": "Private notes about the lead",
+    "estimated_value": 500
+  }
+]
