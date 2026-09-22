@@ -16,9 +16,11 @@ Run the static site locally with:
 
 The project uses this pipeline:
 
-`Prospect → Contacted → Replied → Meeting → Proposal → Won → Lost / Dormant`
+`Prospect → Contacted → Replied → Discovery → Proposal → Won → Lost / Dormant`
 
-It also creates fields for Contact, Opportunity, Next follow-up, Last contact, Source, Notes, and Estimated value, plus a Pipeline board view.
+`Discovery` means requirements and scope are still being explored before a concrete proposal. Meetings can happen during Discovery, Proposal, or later stages without changing the stage by themselves.
+
+It also creates fields for Contact, Email, Phone, Website, Opportunity, First contact, Next follow-up, Last contact, Source, Notes, and Estimated value, plus a Pipeline board view.
 
 The setup script intentionally contains **no prospect or client data**, because this repository is public.
 
@@ -44,7 +46,7 @@ mkdir -p .private
 cp scripts/consulting-leads.example.json .private/consulting-leads.json
 ```
 
-Edit the local JSON file, then preview the import without changing the Project:
+Edit the local JSON file with the lead contact details and opportunity data. `First contact` records the initial outreach/interaction; `Last contact` records the most recent interaction and should initially be the same date. If `last_contact` is omitted, the importer defaults it to `first_contact`. Then preview the import without changing the Project:
 
 ```bash
 DRY_RUN=1 bash scripts/import-consulting-leads.sh

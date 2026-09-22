@@ -82,14 +82,18 @@ option_id() {
 
 STATUS_FIELD_ID="$(field_id "Status")"
 CONTACT_FIELD_ID="$(field_id "Contact")"
+EMAIL_FIELD_ID="$(field_id "Email")"
+PHONE_FIELD_ID="$(field_id "Phone")"
+WEBSITE_FIELD_ID="$(field_id "Website")"
 OPPORTUNITY_FIELD_ID="$(field_id "Opportunity")"
+FIRST_CONTACT_FIELD_ID="$(field_id "First contact")"
 NEXT_FOLLOW_UP_FIELD_ID="$(field_id "Next follow-up")"
 LAST_CONTACT_FIELD_ID="$(field_id "Last contact")"
 SOURCE_FIELD_ID="$(field_id "Source")"
 NOTES_FIELD_ID="$(field_id "Notes")"
 ESTIMATED_VALUE_FIELD_ID="$(field_id "Estimated value")"
 
-for required in   STATUS_FIELD_ID CONTACT_FIELD_ID OPPORTUNITY_FIELD_ID NEXT_FOLLOW_UP_FIELD_ID   LAST_CONTACT_FIELD_ID SOURCE_FIELD_ID NOTES_FIELD_ID ESTIMATED_VALUE_FIELD_ID; do
+for required in   STATUS_FIELD_ID CONTACT_FIELD_ID EMAIL_FIELD_ID PHONE_FIELD_ID WEBSITE_FIELD_ID OPPORTUNITY_FIELD_ID FIRST_CONTACT_FIELD_ID NEXT_FOLLOW_UP_FIELD_ID   LAST_CONTACT_FIELD_ID SOURCE_FIELD_ID NOTES_FIELD_ID ESTIMATED_VALUE_FIELD_ID; do
   if [[ -z "${!required}" ]]; then
     echo "error: required project field is missing: $required" >&2
     exit 1
@@ -138,9 +142,13 @@ for ((i = 0; i < count; i++)); do
   title="$(jq -r '.title' <<<"$lead")"
   status="$(jq -r '.status' <<<"$lead")"
   contact="$(jq -r '.contact // ""' <<<"$lead")"
+  email="$(jq -r '.email // ""' <<<"$lead")"
+  phone="$(jq -r '.phone // ""' <<<"$lead")"
+  website="$(jq -r '.website // ""' <<<"$lead")"
   opportunity="$(jq -r '.opportunity // ""' <<<"$lead")"
+  first_contact="$(jq -r '.first_contact // ""' <<<"$lead")"
   next_follow_up="$(jq -r '.next_follow_up // ""' <<<"$lead")"
-  last_contact="$(jq -r '.last_contact // ""' <<<"$lead")"
+  last_contact="$(jq -r '.last_contact // .first_contact // ""' <<<"$lead")"
   source="$(jq -r '.source // ""' <<<"$lead")"
   notes="$(jq -r '.notes // ""' <<<"$lead")"
   estimated_value="$(jq -r '.estimated_value // ""' <<<"$lead")"
@@ -166,7 +174,11 @@ for ((i = 0; i < count; i++)); do
 
   set_select_field "$item_id" "Status" "$STATUS_FIELD_ID" "$status"
   set_text_field "$item_id" "$CONTACT_FIELD_ID" "$contact"
+  set_text_field "$item_id" "$EMAIL_FIELD_ID" "$email"
+  set_text_field "$item_id" "$PHONE_FIELD_ID" "$phone"
+  set_text_field "$item_id" "$WEBSITE_FIELD_ID" "$website"
   set_text_field "$item_id" "$OPPORTUNITY_FIELD_ID" "$opportunity"
+  set_date_field "$item_id" "$FIRST_CONTACT_FIELD_ID" "$first_contact"
   set_date_field "$item_id" "$NEXT_FOLLOW_UP_FIELD_ID" "$next_follow_up"
   set_date_field "$item_id" "$LAST_CONTACT_FIELD_ID" "$last_contact"
   set_select_field "$item_id" "Source" "$SOURCE_FIELD_ID" "$source"
