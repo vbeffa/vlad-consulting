@@ -16,7 +16,9 @@ Run the static site locally with:
 
 The project uses this pipeline:
 
-`Prospect → Contacted → Replied → Meeting → Proposal → Won → Lost / Dormant`
+`Prospect → Contacted → Replied → Discovery → Proposal → Won → Lost / Dormant`
+
+`Discovery` means requirements and scope are still being explored before a concrete proposal. Meetings can happen during Discovery, Proposal, or later stages without changing the stage by themselves.
 
 It also creates fields for Contact, Opportunity, Next follow-up, Last contact, Source, Notes, and Estimated value, plus a Pipeline board view.
 
