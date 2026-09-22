@@ -25,9 +25,7 @@ gh auth status >/dev/null
 gh repo view "$REPO" >/dev/null
 
 existing_number="$(
-  gh project list --owner "$OWNER" --format json --limit 100 \
-    --jq ".projects[] | select(.title == \"$PROJECT_TITLE\") | .number" \
-    2>/dev/null || true
+  gh project list --owner "$OWNER" --format json --limit 100     --jq ".projects[] | select(.title == \"$PROJECT_TITLE\") | .number"     2>/dev/null || true
 )"
 
 if [[ -n "$existing_number" ]]; then
@@ -38,28 +36,19 @@ fi
 
 echo "Creating project: $PROJECT_TITLE"
 PROJECT_NUMBER="$(
-  gh project create --owner "$OWNER" --title "$PROJECT_TITLE" \
-    --format json --jq '.number'
+  gh project create --owner "$OWNER" --title "$PROJECT_TITLE"     --format json --jq '.number'
 )"
 
 PROJECT_ID="$(
-  gh project view "$PROJECT_NUMBER" --owner "$OWNER" \
-    --format json --jq '.id'
+  gh project view "$PROJECT_NUMBER" --owner "$OWNER"     --format json --jq '.id'
 )"
 
-gh project edit "$PROJECT_NUMBER" --owner "$OWNER" \
-  --visibility PRIVATE \
-  --description "Lightweight CRM for consulting prospects, follow-ups, proposals, and client opportunities." \
-  --readme $'Use this project to track consulting relationships and sales activity.\n\nKeep implementation work in repository issues/PRs (or a client-specific repository) once an opportunity becomes an actual project.' \
-  >/dev/null
+gh project edit "$PROJECT_NUMBER" --owner "$OWNER"   --visibility PRIVATE   --description "Lightweight CRM for consulting prospects, follow-ups, proposals, and client opportunities."   --readme $'Use this project to track consulting relationships and sales activity.\n\nKeep implementation work in repository issues/PRs (or a client-specific repository) once an opportunity becomes an actual project.'   >/dev/null
 
 gh project link "$PROJECT_NUMBER" --owner "$OWNER" --repo "$REPO"
 
 STATUS_FIELD_ID="$(
-  gh api graphql \
-    -F login="$OWNER" \
-    -F number="$PROJECT_NUMBER" \
-    -f query='query($login:String!, $number:Int!) {
+  gh api graphql     -F login="$OWNER"     -F number="$PROJECT_NUMBER"     -f query='query($login:String!, $number:Int!) {
       user(login:$login) {
         projectV2(number:$number) {
           fields(first:100) {
@@ -69,8 +58,7 @@ STATUS_FIELD_ID="$(
           }
         }
       }
-    }' \
-    --jq '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .id'
+    }'     --jq '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .id'
 )"
 
 if [[ -z "$STATUS_FIELD_ID" ]]; then
@@ -80,16 +68,14 @@ fi
 
 # Repurpose the built-in Status field as the consulting pipeline. This is safe
 # for a newly-created project because it has no meaningful item status data yet.
-gh api graphql \
-  -F fieldId="$STATUS_FIELD_ID" \
-  -f query='mutation($fieldId:ID!) {
+gh api graphql   -F fieldId="$STATUS_FIELD_ID"   -f query='mutation($fieldId:ID!) {
     updateProjectV2Field(input:{
       fieldId:$fieldId,
       singleSelectOptions:[
         {name:"Prospect",       color:GRAY,   description:"Identified lead not yet contacted"},
         {name:"Contacted",      color:BLUE,   description:"Initial outreach sent"},
-        {name:"Replied",        color:PURPLE, description:"Lead has responded; next step is not yet a meeting"},
-        {name:"Meeting",        color:YELLOW, description:"Meeting or substantive discussion scheduled/in progress"},
+        {name:"Replied",        color:PURPLE, description:"Lead has responded; discovery has not started yet"},
+        {name:"Discovery",      color:YELLOW, description:"Requirements and scope are being explored before a proposal"},
         {name:"Proposal",       color:ORANGE, description:"Scope/pricing proposal under consideration"},
         {name:"Won",            color:GREEN,  description:"Converted to paying client/project"},
         {name:"Lost / Dormant", color:RED,    description:"Declined, inactive, or no longer worth active follow-up"}
@@ -104,8 +90,7 @@ create_field() {
   local type="$2"
   shift 2
 
-  gh project field-create "$PROJECT_NUMBER" --owner "$OWNER" \
-    --name "$name" --data-type "$type" "$@" >/dev/null
+  gh project field-create "$PROJECT_NUMBER" --owner "$OWNER"     --name "$name" --data-type "$type" "$@" >/dev/null
 }
 
 echo "Creating fields"
@@ -113,16 +98,13 @@ create_field "Contact" TEXT
 create_field "Opportunity" TEXT
 create_field "Next follow-up" DATE
 create_field "Last contact" DATE
-create_field "Source" SINGLE_SELECT \
-  --single-select-options "Cold outreach,Referral,Existing relationship,Craigslist"
+create_field "Source" SINGLE_SELECT   --single-select-options "Cold outreach,Referral,Existing relationship,Craigslist"
 create_field "Notes" TEXT
 create_field "Estimated value" NUMBER
 
 # A board view is convenient for moving leads through the Status pipeline.
 # GitHub board views group new projects by Status by default.
-gh api graphql \
-  -F projectId="$PROJECT_ID" \
-  -f query='mutation($projectId:ID!) {
+gh api graphql   -F projectId="$PROJECT_ID"   -f query='mutation($projectId:ID!) {
     createProjectV2View(input:{
       projectId:$projectId,
       name:"Pipeline",
