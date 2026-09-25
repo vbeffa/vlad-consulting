@@ -10,6 +10,10 @@ Run the static site locally with:
 ./run-local.sh
 ```
 
+## Marketing
+
+Current marketing material is documented under `marketing/`. The Craigslist ad for local small-business technology help, including its publication details, image, copy, and initial performance snapshot, is in [`marketing/craigslist-small-business-help.md`](marketing/craigslist-small-business-help.md).
+
 ## Consulting lead project
 
 `scripts/setup-github-project.sh` creates a private, user-owned GitHub Project named **Tech Consulting** and links it to this repository. The project is intended as a lightweight CRM for prospects and client opportunities; implementation work should remain in repository issues/PRs or a client-specific repository.
