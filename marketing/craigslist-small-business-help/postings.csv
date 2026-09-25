@@ -1,0 +1,2 @@
+posting_id,published_at,cost_usd,commit_sha,notes
+7965046986,2026-09-11 20:49 MST,5,05e672d7abfcdf6354a5c0acb9cf114abc102b2a,"Historical posting; matching creative snapshot documented on master before migration to structured files."

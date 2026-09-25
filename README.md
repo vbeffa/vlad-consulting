@@ -12,7 +12,7 @@ Run the static site locally with:
 
 ## Marketing
 
-Current marketing material is documented under `marketing/`. The Craigslist ad for local small-business technology help, including its publication details, image, copy, and initial performance snapshot, is in [`marketing/craigslist-small-business-help.md`](marketing/craigslist-small-business-help.md).
+Current marketing material is documented under `marketing/`. The [marketing record format](marketing/README.md) separates exact ad copy, metadata, publication history, performance snapshots, and outcomes. The Craigslist small-business technology ad is stored in [`marketing/craigslist-small-business-help/`](marketing/craigslist-small-business-help/).
 
 ## Consulting lead project
 

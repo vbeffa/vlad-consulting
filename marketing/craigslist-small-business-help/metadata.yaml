@@ -1,0 +1,9 @@
+platform: craigslist
+market: Flagstaff
+title: "Website, Social Media & Technology Help for Small Businesses"
+category: "computer services"
+offered_in_person: true
+offered_virtually: true
+price_field: null
+images:
+  - "../../images/logo.png"
