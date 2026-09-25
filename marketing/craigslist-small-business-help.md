@@ -17,9 +17,9 @@ Website, Social Media & Technology Help for Small Businesses
 
 Need help with your website, online business, or a technology problem you don't know how to solve?
 
-I'm a Sedona-area software engineer with 17+ years of professional experience, offering direct, practical technology help to local small businesses and individuals.
+I'm a Sedona-area software engineer with 17+ years of professional experience, offering direct, practical technology help to local small businesses and individuals. Small projects are welcome.
 
-Small projects are welcome. I can help with:
+I can help with:
 
 - Website updates, fixes, redesigns, and modernization
 - Moving websites to less expensive or better hosting
@@ -44,7 +44,9 @@ I'm local to the Sedona area and can meet in person when appropriate. Remote wor
 
 Call or text me at 435-466-7772, or reply through Craigslist, with a brief description of what you're trying to accomplish. I'll let you know whether it's something I can help with.
 
-## Known performance snapshot
+## Performance snapshots
+
+### Initial snapshot
 
 After approximately 24 hours:
 
@@ -52,5 +54,13 @@ After approximately 24 hours:
 - **Views:** 8
 - **View rate:** about 10.7%
 - **Inquiries:** 0
+
+### September 24, 2026
+
+Craigslist stats snapshot at about 19:03 MST:
+
+- **Impressions:** 324
+- **Views:** 40
+- **View rate:** about 12.3%
 
 Keep future snapshots dated so changes to the ad or market conditions can be compared over time.
